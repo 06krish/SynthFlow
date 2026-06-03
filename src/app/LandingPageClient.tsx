@@ -311,8 +311,8 @@ export default function LandingPageClient({ initialUser }: LandingPageClientProp
               </ul>
               <div className="mt-4 p-3 bg-neutral-950 border border-neutral-800 rounded-lg text-xs font-mono">
                 <p className="text-neutral-500">Test Account:</p>
-                <p className="text-emerald-400">admin@company.com</p>
-                <p className="text-neutral-400">password: admin123</p>
+                <p className="text-emerald-400">krishraj.suj38@gmail.com</p>
+                <p className="text-neutral-400">password: 3406@Krish</p>
               </div>
             </div>
             <a

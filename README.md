@@ -182,7 +182,7 @@ By default, the server runs on [http://localhost:3000](http://localhost:3000).
 ## 7. How to Log In & Use the App
 
 ### Test Drive Credentials:
-- **Admin**: `admin@company.com` / `admin123`
+- **Admin**: `krishraj.suj38@gmail.com` / `3406@Krish`
 - **Seller**: `seller@company.com` / `seller123`
 
 ### Walkthrough of the Order Flow:

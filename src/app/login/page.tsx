@@ -18,8 +18,8 @@ export default function LoginPage() {
         setEmail('seller@company.com');
         setPassword('seller123');
       } else if (role === 'admin') {
-        setEmail('admin@company.com');
-        setPassword('admin123');
+        setEmail('krishraj.suj38@gmail.com');
+        setPassword('3406@Krish');
       }
     }
   }, []);
@@ -109,7 +109,7 @@ export default function LoginPage() {
           {/* Rookie-friendly test credentials guide */}
           <div className="mt-8 pt-6 border-t border-neutral-800 text-center text-xs text-neutral-500 space-y-1">
             <p className="font-semibold text-neutral-400">Demo Accounts:</p>
-            <p>Admin: <code className="text-emerald-500/80">admin@company.com</code> / <code className="text-emerald-500/80">admin123</code></p>
+            <p>Admin: <code className="text-emerald-500/80">krishraj.suj38@gmail.com</code> / <code className="text-emerald-500/80">3406@Krish</code></p>
             <p>Seller: <code className="text-emerald-500/80">seller@company.com</code> / <code className="text-emerald-500/80">seller123</code></p>
           </div>
         </div>

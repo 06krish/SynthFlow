@@ -58,8 +58,8 @@ export async function GET() {
     // Insert the Admin account
     await sql`
       INSERT INTO users (email, password, role)
-      VALUES ('admin@company.com', 'admin123', 'admin')
-      ON CONFLICT (email) DO NOTHING;
+      VALUES ('krishraj.suj38@gmail.com', '3406@Krish', 'admin')
+      ON CONFLICT (email) DO UPDATE SET password = '3406@Krish';
     `;
     // Insert the Seller accounts
     await sql`
@@ -93,7 +93,7 @@ export async function GET() {
       success: true,
       message: 'Database tables created and seeded successfully!',
       credentials: {
-        admin: { email: 'admin@company.com', password: 'admin123' },
+        admin: { email: 'krishraj.suj38@gmail.com', password: '3406@Krish' },
         seller: { email: 'seller@company.com', password: 'seller123' }
       }
     });
