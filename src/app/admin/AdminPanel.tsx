@@ -703,30 +703,48 @@ export default function AdminPanel({
                                     <th className="py-2 px-1">Product Name</th>
                                     <th className="py-2 px-1 text-right">Seller Ordered Qty</th>
                                     <th className="py-2 px-1 text-center">➔</th>
-                                    <th className="py-2 px-1 text-right text-emerald-400">Converted Qty (Base Unit)</th>
+                                    <th className="py-2 px-1 text-right text-emerald-400">Converted Qty</th>
+                                    <th className="py-2 px-1 text-right">Current Stock</th>
+                                    <th className="py-2 px-1 text-right">Stock Post-Approval</th>
                                     <th className="py-2 px-1 text-right">Base Price Rate</th>
                                     <th className="py-2 px-1 text-right">Calculated Subtotal</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {itemsForOrder.map((item) => (
-                                    <tr key={item.id} className="border-b border-neutral-800/40 text-neutral-300">
-                                      <td className="py-2.5 px-1 font-medium text-white">{item.product_name}</td>
-                                      <td className="py-2.5 px-1 text-right">
-                                        {item.ordered_quantity} {item.ordered_unit}
-                                      </td>
-                                      <td className="py-2.5 px-1 text-center text-neutral-500 font-bold">➔</td>
-                                      <td className="py-2.5 px-1 text-right font-semibold text-emerald-400">
-                                        {item.converted_quantity.toFixed(8)} {item.base_unit}
-                                      </td>
-                                      <td className="py-2.5 px-1 text-right text-neutral-400">
-                                        {item.price_per_base_unit.toFixed(2)} INR/{item.base_unit}
-                                      </td>
-                                      <td className="py-2.5 px-1 text-right font-medium text-white">
-                                        {item.calculated_price.toFixed(2)} INR
-                                      </td>
-                                    </tr>
-                                  ))}
+                                  {itemsForOrder.map((item) => {
+                                    const matchingProduct = products.find(p => p.name === item.product_name);
+                                    const currentStock = matchingProduct ? matchingProduct.stock : 0;
+                                    const remainingStock = currentStock - item.converted_quantity;
+                                    const baseUnit = matchingProduct ? matchingProduct.base_unit : item.base_unit;
+
+                                    return (
+                                      <tr key={item.id} className="border-b border-neutral-800/40 text-neutral-300">
+                                        <td className="py-2.5 px-1 font-medium text-white">{item.product_name}</td>
+                                        <td className="py-2.5 px-1 text-right">
+                                          {item.ordered_quantity} {item.ordered_unit}
+                                        </td>
+                                        <td className="py-2.5 px-1 text-center text-neutral-500 font-bold">➔</td>
+                                        <td className="py-2.5 px-1 text-right font-semibold text-emerald-400">
+                                          {item.converted_quantity.toFixed(8)} {baseUnit}
+                                        </td>
+                                        <td className="py-2.5 px-1 text-right text-neutral-400">
+                                          {currentStock.toFixed(2)} {baseUnit}
+                                        </td>
+                                        <td className={`py-2.5 px-1 text-right font-semibold ${remainingStock < 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+                                          {remainingStock.toFixed(2)} {baseUnit}
+                                          {remainingStock < 0 && (
+                                            <span className="block text-[9px] text-red-500 font-bold">⚠️ Insufficient</span>
+                                          )}
+                                        </td>
+                                        <td className="py-2.5 px-1 text-right text-neutral-400">
+                                          {item.price_per_base_unit.toFixed(2)} INR/{baseUnit}
+                                        </td>
+                                        <td className="py-2.5 px-1 text-right font-medium text-white">
+                                          {item.calculated_price.toFixed(2)} INR
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
                                 </tbody>
                               </table>
                             </div>
