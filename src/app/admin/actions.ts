@@ -186,6 +186,11 @@ export async function addSellerAction(email: string, password: string) {
       return { error: 'Both email and password are required.' };
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { error: 'Please enter a valid email address (e.g., user@domain.com).' };
+    }
+
     await sql`
       INSERT INTO users (email, password, role)
       VALUES (${email}, ${password}, 'seller');

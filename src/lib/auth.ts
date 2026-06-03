@@ -13,6 +13,11 @@ export async function loginAction(email: string, password: string) {
     return { error: 'Please enter both email and password.' };
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { error: 'Please enter a valid email address (e.g., user@domain.com).' };
+  }
+
   try {
     // 1. Fetch user from Neon database using raw SQL
     const users = await sql`
