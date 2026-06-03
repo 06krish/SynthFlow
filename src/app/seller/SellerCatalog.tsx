@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { logoutAction } from '@/lib/auth';
 import { placeOrderAction } from './actions';
 import { calculateItemPrice, convertQuantity } from '@/lib/conversion';
@@ -59,9 +59,22 @@ export default function SellerCatalog({
   userEmail,
   userRole
 }: SellerCatalogProps) {
-  const [products] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [orderItems, setOrderItems] = useState<OrderItem[]>(initialOrderItems);
+
+  // Sync states with fresh server props
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
+  useEffect(() => {
+    setOrders(initialOrders);
+  }, [initialOrders]);
+
+  useEffect(() => {
+    setOrderItems(initialOrderItems);
+  }, [initialOrderItems]);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [rightTab, setRightTab] = useState<'cart' | 'history'>('cart');
 

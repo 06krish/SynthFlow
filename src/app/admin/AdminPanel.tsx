@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { logoutAction } from '@/lib/auth';
 import {
   addProductAction,
@@ -67,6 +67,23 @@ export default function AdminPanel({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [orderItems, setOrderItems] = useState<OrderItem[]>(initialOrderItems);
   const [sellers, setSellers] = useState<User[]>(initialSellers);
+
+  // Sync states with fresh server props
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
+  useEffect(() => {
+    setOrders(initialOrders);
+  }, [initialOrders]);
+
+  useEffect(() => {
+    setOrderItems(initialOrderItems);
+  }, [initialOrderItems]);
+
+  useEffect(() => {
+    setSellers(initialSellers);
+  }, [initialSellers]);
 
   // Global messages
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
