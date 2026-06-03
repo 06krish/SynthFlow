@@ -1,12 +1,12 @@
-# AasaMedChem Inventory & Order Management System
+# SynthFlow - High-Precision Inventory & Order Management System
 
-Welcome to the **AasaMedChem Stock & Order Management Portal**. This application is a lightweight, responsive, and rookie-friendly Next.js web portal designed to manage chemical products, perform precise unit conversions in real-time, and manage submitted order quotations.
+Welcome to **SynthFlow** (formerly AasaMedChem). This application is a lightweight, responsive, and developer-friendly Next.js web portal designed to manage chemical inventories, perform precise unit conversions in real-time, isolate multi-seller transactions, and resolve order quotations with automatic stock deductions.
 
 ---
 
 ## 1. High-Level System Design & Tech Stack
 
-This app is built using a clean, simple architecture so that anyone can read the code and understand how it works:
+SynthFlow is built with a clean, decoupled architecture:
 
 ```
 [Browser Client]
@@ -18,25 +18,25 @@ This app is built using a clean, simple architecture so that anyone can read the
 [Neon serverless cloud database (PostgreSQL)]
 ```
 
-### Technologies Used:
-- **Framework**: Next.js 15 (App Router with Server Actions & Middleware)
-- **Database Client**: `@neondatabase/serverless` (Runs raw SQL queries directly on Neon)
+### Tech Stack:
+- **Framework**: Next.js 16 (App Router with Server Actions & Middleware)
+- **Database Client**: `@neondatabase/serverless` (Direct, raw SQL queries on Neon)
 - **Database**: Neon Serverless Cloud PostgreSQL
-- **Styling**: Tailwind CSS (Dark Mode with Emerald glows, responsive tables, and card views)
-- **Session Tracking**: Plain-text HTTP-only cookies (`user_email` and `user_role`)
+- **Styling**: Tailwind CSS v4 (Sleek dark mode theme with emerald accent colors, glassmorphism, and responsive tables)
+- **Session Tracking**: Lightweight, inspectable HTTP-only cookies (`user_email` and `user_role`)
 
 ---
 
 ## 2. Database Schema & Data Types
 
 We chose PostgreSQL `NUMERIC(20, 8)` for all price and quantity fields:
-- *Why not floating-point?* Standard float types (`REAL` or `DOUBLE PRECISION`) suffer from binary rounding errors (e.g., `0.1 + 0.2` becomes `0.30000000000000004`). In inventory systems and order invoicing, this is unacceptable.
-- *Why `NUMERIC(20, 8)`?* It stores up to 20 digits, with exactly 8 decimal places. This allows us to track tiny fractions (e.g., milliliters or grams of a highly concentrated active ingredient) with absolute mathematical accuracy.
+- *Why not floating-point?* Standard float types (`REAL` or `DOUBLE PRECISION`) suffer from binary rounding errors (e.g., `0.1 + 0.2` becomes `0.30000000000000004`). In inventory and invoice systems, this is unacceptable.
+- *Why `NUMERIC(20, 8)`?* It stores up to 20 digits with exactly 8 decimal places. This allows us to track tiny fractions (e.g., milliliters or grams of a highly concentrated active ingredient) with absolute mathematical accuracy.
 
 ### Tables Overview:
 1. **`users`**:
-   - `email` (VARCHAR(100), Primary Key): User's identifier.
-   - `password` (VARCHAR(100)): Plain text password (simple for learning).
+   - `email` (VARCHAR(100), Primary Key): User's login identifier.
+   - `password` (VARCHAR(100)): Plain text password.
    - `role` (VARCHAR(20)): User's role (`'admin'` or `'seller'`).
 
 2. **`products`**:
@@ -52,11 +52,11 @@ We chose PostgreSQL `NUMERIC(20, 8)` for all price and quantity fields:
    - `user_email` (VARCHAR(100)): Seller who submitted the quotation.
    - `status` (VARCHAR(20)): `'pending'`, `'approved'`, or `'rejected'`.
    - `total_price` (NUMERIC(20, 8)): Grand total price in INR.
-   - `created_at` (TIMESTAMP): Date and time of order.
+   - `created_at` (TIMESTAMP): Date and time of order creation.
 
 4. **`order_items`**:
    - `id` (SERIAL, Primary Key): Unique row identifier.
-   - `order_id` (UUID): Reference to the order.
+   - `order_id` (UUID): Reference to the parent order.
    - `product_name` (VARCHAR(100)): Name of the product at order time.
    - `ordered_quantity` (NUMERIC(20, 8)): Quantity typed by the seller.
    - `ordered_unit` (VARCHAR(10)): Unit chosen by the seller.
@@ -86,20 +86,20 @@ To convert quantities cleanly between compatible units, we map each unit to a re
    $$250 \times \frac{1}{1000} = 0.25\text{ kg}$$
 
 2. **Price Subtotal Calculation**:
-   If a product is priced at $P$ INR per its `base_unit` (e.g. $400\text{ INR/kg}$), and a user orders quantity $Q$ in unit $A$ (e.g. $250\text{ g}$):
+   If a product is priced at $P$ INR per its `base_unit` (e.g., $400\text{ INR/kg}$), and a user orders quantity $Q$ in unit $A$ (e.g., $250\text{ g}$):
    - Step A: Convert quantity to base unit: $Q_{\text{base}} = 0.25\text{ kg}$.
-   - Step B: Subtotal = $Q_{\text{base}} \times P = 0.25 \times 400 = 100.00\text{ INR}$.
+   - Step B: Subtotal = $Q_{\text{base}} \times P = 0.25 \times 400 = 100\text{ INR}$.
 
-*All conversions are processed instantly in the browser for the UI display, and re-calculated securely on the server side prior to saving in the database.*
+*All conversions are processed instantly in the browser for UI display, and re-calculated securely on the server side prior to saving in the database.*
 
 ---
 
 ## 4. Setup & Installation Guide
 
-Follow these steps to run the application locally on your computer:
+Follow these steps to run the application locally:
 
 ### Step 1: Set up Environment Variables
-1. Find the `.env.local` file in the root of the project.
+1. Find or create the `.env.local` file in the root of the project.
 2. Ensure your Neon connection string is inserted there:
    ```env
    DATABASE_URL=postgresql://neondb_owner:npg_9GqQBP7xlKIX@ep-damp-glade-aqyfbn12.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require
@@ -126,36 +126,39 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 5. How to Log In & Test the Application
+## 5. Key App Flow & Features
 
-Use these pre-seeded credentials to explore the system:
+### A. Dynamic Landing Page (`/`)
+- Featuring a modern glassmorphic navbar with active session recognition.
+- **Interactive Live Unit Calculator** widget allowing visitors to test the conversion logic directly from the homepage.
+- Role-based login routes (**Seller Access** and **Admin Portal**).
 
-| Role | Username / Email | Password | Allowed Dashboards |
-| :--- | :--- | :--- | :--- |
-| **Admin** | `admin@company.com` | `admin123` | `/admin` and `/seller` |
-| **Seller** | `seller@company.com` | `seller123` | `/seller` (Redirected if opening `/admin`) |
+### B. Frictionless Testing Login
+- Selecting a login option from the landing page will append `?role=seller` or `?role=admin` to the URL.
+- The login page automatically reads this parameter and pre-fills the email and password fields. You can log in with a single click of the **Sign In** button!
 
-### Test Drive Flow:
-1. **Log in as a Seller** (`seller@company.com`):
-   - Choose a product (e.g., Sodium Chloride).
-   - Enter quantity `500` and select unit `g`. Note that the screen dynamically displays:
-     - Converted quantity: `0.50000000 kg`
-     - Live item subtotal: `125.00 INR`
-   - Click **➕ Add to Order List**.
-   - Click **Submit Quotation**.
-
-2. **Log in as an Admin** (`admin@company.com`):
-   - Switch to the **Quotations & Orders** tab.
-   - Click the submitted order to expand it. You will see:
-     - The product name, ordered unit (`500 g`), converted unit (`0.5 kg`), pricing rate (`250.00 INR/kg`), and item subtotal (`125.00 INR`).
-   - Click **Approve Order**.
-   - Navigate to the **Inventory Products** tab. You will see that the stock level for Sodium Chloride has successfully dropped from `100.00 kg` to `99.50 kg`.
+### C. Multi-Seller Isolation
+- Different sellers (e.g., `seller@company.com` vs. `seller2@company.com`) have separate accounts.
+- **Seller view** fetches and displays **only** the orders submitted by the currently logged-in seller.
+- **Admin view** fetches all incoming orders, manages catalog pricing/stock levels, and registers or removes seller credentials under the **Manage Sellers** tab.
 
 ---
 
-## 6. How to Deploy on Vercel
+## 6. Pre-Seeded Credentials for Testing
 
-To deploy your application live to the web:
+Use these credentials to explore the system:
+
+| Role | Username / Email | Password | Pre-fill trigger |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@company.com` | `admin123` | Click **Admin Login** on Landing Page |
+| **Seller 1** | `seller@company.com` | `seller123` | Click **Seller Login** on Landing Page |
+| **Seller 2** | `seller2@company.com` | `seller123` | Can be added / managed by Admin |
+
+---
+
+## 7. How to Deploy on Vercel
+
+To deploy your application live:
 1. Push your code to a GitHub repository.
 2. Go to the [Vercel Dashboard](https://vercel.com) and click **Add New Project**.
 3. Select your repository.
@@ -163,4 +166,4 @@ To deploy your application live to the web:
    - Key: `DATABASE_URL`
    - Value: `postgresql://neondb_owner:npg_9GqQBP7xlKIX@ep-damp-glade-aqyfbn12.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require`
 5. Click **Deploy**.
-6. Once deployed, open your live URL (e.g., `https://your-app.vercel.app/api/setup`) once to run the table setup in your production database.
+6. Once deployed, visit `/api/setup` on your live URL to initialize the PostgreSQL database tables.
