@@ -15,7 +15,7 @@ export default function LoginPage() {
       const params = new URLSearchParams(window.location.search);
       const role = params.get('role');
       if (role === 'seller') {
-        setEmail('seller@company.com');
+        setEmail('seller06@gmail.com');
         setPassword('seller123');
       } else if (role === 'admin') {
         setEmail('krishraj.suj38@gmail.com');
@@ -110,7 +110,7 @@ export default function LoginPage() {
           <div className="mt-8 pt-6 border-t border-neutral-800 text-center text-xs text-neutral-500 space-y-1">
             <p className="font-semibold text-neutral-400">Demo Accounts:</p>
             <p>Admin: <code className="text-emerald-500/80">krishraj.suj38@gmail.com</code> / <code className="text-emerald-500/80">3406@Krish</code></p>
-            <p>Seller: <code className="text-emerald-500/80">seller@company.com</code> / <code className="text-emerald-500/80">seller123</code></p>
+            <p>Seller: <code className="text-emerald-500/80">seller06@gmail.com</code> / <code className="text-emerald-500/80">seller123</code></p>
           </div>
         </div>
       </div>

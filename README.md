@@ -12,7 +12,7 @@ SynthFlow is a B2B chemical distribution and order portal that solves the challe
 - **Interactive Landing Page (`/`)**: Features a modern navbar and a live conversion widget to test the translation between weights, volumes, and counts.
 - **Slick Interactive Order Builder**: Sellers can select items and use a live calculator to see unit conversions and subtotal calculations instantly as they type.
 - **Incremental Cart & Quotation Submission**: Sellers compile cart line items and submit them as a single order quotation.
-- **Multi-Seller Isolation**: Account isolation ensures sellers (e.g., `seller@company.com` vs. `seller2@company.com`) only view their own order logs.
+- **Multi-Seller Isolation**: Account isolation ensures sellers (e.g., `seller06@gmail.com` vs. `seller2@company.com`) only view their own order logs.
 - **Full Admin Control Panel**: Admins can edit pricing and stock levels, manage registered seller accounts (Add/Delete), and review incoming orders.
 - **One-Click Order Resolution**: Admins approve or reject pending orders. Approving an order automatically verifies stock availability and deducts inventory in real-time.
 - **Frictionless Login Pre-filling**: Shortcuts on the landing page pre-fill credentials for testing both roles.
@@ -183,7 +183,7 @@ By default, the server runs on [http://localhost:3000](http://localhost:3000).
 
 ### Test Drive Credentials:
 - **Admin**: `krishraj.suj38@gmail.com` / `3406@Krish`
-- **Seller**: `seller@company.com` / `seller123`
+- **Seller**: `seller06@gmail.com` / `seller123`
 
 ### Walkthrough of the Order Flow:
 1. **Landing Page (`/`)**:

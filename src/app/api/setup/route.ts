@@ -64,13 +64,13 @@ export async function GET() {
     // Insert the Seller accounts
     await sql`
       INSERT INTO users (email, password, role)
-      VALUES ('seller@company.com', 'seller123', 'seller')
-      ON CONFLICT (email) DO NOTHING;
+      VALUES ('seller06@gmail.com', 'seller123', 'seller')
+      ON CONFLICT (email) DO UPDATE SET password = 'seller123';
     `;
     await sql`
       INSERT INTO users (email, password, role)
       VALUES ('seller2@company.com', 'seller123', 'seller')
-      ON CONFLICT (email) DO NOTHING;
+      ON CONFLICT (email) DO UPDATE SET password = 'seller123';
     `;
 
     // 6. Insert initial catalog products (only if the products table is empty)
@@ -94,7 +94,7 @@ export async function GET() {
       message: 'Database tables created and seeded successfully!',
       credentials: {
         admin: { email: 'krishraj.suj38@gmail.com', password: '3406@Krish' },
-        seller: { email: 'seller@company.com', password: 'seller123' }
+        seller: { email: 'seller06@gmail.com', password: 'seller123' }
       }
     });
   } catch (error: any) {
